@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>Cài đặT Odod SaaS Bằng Docker | Bài viết Tiển Nguyễn</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Docker,Odoo,SaaS,ERP" />
+    
+    <meta name="description" content="SaaS Odoo được cung cấp bởi một công ty khác. Nó không thuộc Odoo. Do đó sẽ có những vấn đề không tương thích khi cố gắn cài đặt SaaS Odoo. Vì vậy Docker là một chọn lựa tuyệt vời để triển khai Odoo t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cài đặT Odod SaaS Bằng Docker">
+<meta property="og:url" content="http://nguyenvantien2009.com/2021/install-odoo-by-docker.html">
+<meta property="og:site_name" content="Bài viết Tiển Nguyễn">
+<meta property="og:description" content="SaaS Odoo được cung cấp bởi một công ty khác. Nó không thuộc Odoo. Do đó sẽ có những vấn đề không tương thích khi cố gắn cài đặt SaaS Odoo. Vì vậy Docker là một chọn lựa tuyệt vời để triển khai Odoo t">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:image" content="http://nguyenvantien2009.com/viet/2021/install-odoo-by-docker/odoo-vs-sap.png">
+<meta property="article:published_time" content="2019-06-09T17:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-02T08:48:23.487Z">
+<meta property="article:author" content="Tien Nguyen">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="Odoo">
+<meta property="article:tag" content="SaaS">
+<meta property="article:tag" content="ERP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://nguyenvantien2009.com/viet/2021/install-odoo-by-docker/odoo-vs-sap.png">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/viet/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/viet/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/viet/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/viet/css/style.css">
+
+
+    
+<script src="/viet/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/viet/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/viet/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-61220253-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-61220253-1');
+</script>
+<!-- End Google Analytics -->
+
+    
+    
+    
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+    
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/viet/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/viet/">Trang chủ</a>
+                                </li>
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Cong-cu/">Công cụ</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Ha-tang/">Hạ tầng</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Ly-luan/">Lý luận</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Lap-trinh/">Lập trình</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/May-hoc/">Máy học</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Thiet-ke/">Thiết kế</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Thu-thuat/">Thủ thuật</a></li></ul>
+                                
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/viet/about/index.html">Giới thiệu</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Tìm kiếm" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Gõ gì đó..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Bài viết',
+            PAGES: 'Trang',
+            CATEGORIES: 'Chuyên mục',
+            TAGS: 'Thẻ',
+            UNTITLED: '(Không đề)',
+        },
+        ROOT_URL: '/viet/',
+        CONTENT_URL: '/viet/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/viet/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/viet/categories/Cong-cu/">Công cụ</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-2021/install-odoo-by-docker" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Cài đặT Odod SaaS Bằng Docker
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/viet/2021/install-odoo-by-docker.html" class="article-date">
+       <time datetime="2019-06-09T17:00:00.000Z" itemprop="datePublished">10-06-2019</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/viet/2021/install-odoo-by-docker.html" class="article-date">
+     <time datetime="2022-06-02T08:48:23.487Z" itemprop="dateModified">02-06-2022</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/viet/tags/Docker/" rel="tag">Docker</a>, <a class="tag-link-link" href="/viet/tags/ERP/" rel="tag">ERP</a>, <a class="tag-link-link" href="/viet/tags/Odoo/" rel="tag">Odoo</a>, <a class="tag-link-link" href="/viet/tags/SaaS/" rel="tag">SaaS</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p>SaaS Odoo được cung cấp bởi một công ty khác. Nó không thuộc Odoo. Do đó sẽ có những vấn đề không tương thích khi cố gắn cài đặt SaaS Odoo. Vì vậy Docker là một chọn lựa tuyệt vời để triển khai Odoo trên các hệ thống máy chủ nhanh và ổn định.</p>
+<p><img src="/viet/2021/install-odoo-by-docker/odoo-vs-sap.png" alt="Install Oddos"></p>
+<h1 id="Cai-dat"><a href="#Cai-dat" class="headerlink" title="Cài đặt"></a>Cài đặt</h1><h2 id="1-Docker-Engine"><a href="#1-Docker-Engine" class="headerlink" title="1. Docker Engine"></a>1. Docker Engine</h2><p>Trong bài này chúng ta không đề cập cách cài đặt Docker Engine vì nó quá phổ biến trên các bài báo khác. Dễ dang tìm và cài đặt.</p>
+<h2 id="2-Cai-dat-Network-Docker"><a href="#2-Cai-dat-Network-Docker" class="headerlink" title="2. Cài đặt Network Docker"></a>2. Cài đặt Network Docker</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network create odoo-saas</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-Cai-dat-Postgres-Docker"><a href="#3-Cai-dat-Postgres-Docker" class="headerlink" title="3. Cài đặt Postgres Docker"></a>3. Cài đặt Postgres Docker</h2><p>Chúng ta sử dụng Postgres 9.6 cho Odoo 11.0. Tùy version Odoo ta cần cài đặt version phù hợp.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run \</span><br><span class="line">-d \</span><br><span class="line">-e POSTGRES_USER=odoo \</span><br><span class="line">-e POSTGRES_PASSWORD=odoo \</span><br><span class="line">--network=odoo-saas \</span><br><span class="line">--name db-saas  \</span><br><span class="line">postgres:9.6</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-Cai-dat-Odoo-Docker"><a href="#4-Cai-dat-Odoo-Docker" class="headerlink" title="4. Cài đặt Odoo Docker"></a>4. Cài đặt Odoo Docker</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker run \</span><br><span class="line">-d \</span><br><span class="line">--name odoo \</span><br><span class="line">--network=odoo-saas \</span><br><span class="line">-e ODOO_MASTER_PASS=admin \</span><br><span class="line">-e DB_PORT_5432_TCP_ADDR=db-saas \</span><br><span class="line">-v /mnt/addons/extras:/mnt/addons/extras \</span><br><span class="line">-t itprojectsllc/install-odoo:11.0</span><br></pre></td></tr></table></figure>
+
+<p>Thay đổi cách cấu hình mặt định của Odoo để có thể nhận sub-domain làm tên databse.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker exec \</span><br><span class="line"> -u root \</span><br><span class="line"> -t odoo \</span><br><span class="line">sed -i &#x27;s/dbfilter.*/dbfilter = ^%d$/&#x27; /mnt/config/odoo-server.conf</span><br></pre></td></tr></table></figure>
+
+<p>Restart Odoo Docker</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart odoo</span><br></pre></td></tr></table></figure>
+
+<p>Ta cần cài đặt nginx làm proxy để có thể chạy được cổng 80 (cổng mặc định của chạy website) thay vì phải chạy web với port mặt định từ Odoo. </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run  \</span><br><span class="line">-d \</span><br><span class="line">-p 80:80 \</span><br><span class="line">--name saas-nginx \</span><br><span class="line">--network=odoo-saas \</span><br><span class="line">-t itprojectsllc/docker-odoo-nginx</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-Cai-dat-SaaS"><a href="#5-Cai-dat-SaaS" class="headerlink" title="5. Cài đặt SaaS"></a>5. Cài đặt SaaS</h2><p>Bây giờ ta mới tiến hành cài SaaS bằng các dòng lệnh trong <code>odoo-install-saas.sh</code>. Tập tin này chứa mã để tiến hành tương tác với hệ thống Odoo. </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">INIT_SAAS_TOOLS_VALUE=<span class="string">&#x27; \</span></span><br><span class="line"><span class="string">--portal-create \</span></span><br><span class="line"><span class="string">--server-create \</span></span><br><span class="line"><span class="string">--plan-create \</span></span><br><span class="line"><span class="string">--odoo-script=/mnt/odoo-source/odoo-bin \</span></span><br><span class="line"><span class="string">--odoo-config=/mnt/config/odoo-server.conf \</span></span><br><span class="line"><span class="string">--portal-db-name=portal \</span></span><br><span class="line"><span class="string">--server-db-name=server-1 \</span></span><br><span class="line"><span class="string">--server-hosts-template=&#123;dbname&#125;.&#123;base_saas_domain_1&#125; \</span></span><br><span class="line"><span class="string">--plan-template-db-name=template-1 \</span></span><br><span class="line"><span class="string">--plan-clients=demo-%i \</span></span><br><span class="line"><span class="string">&#x27;</span> &amp;&amp; docker <span class="built_in">exec</span> -u root -t odoo /bin/bash \</span><br><span class="line">-c <span class="string">&quot;export INIT_SAAS_TOOLS=&#x27;<span class="variable">$INIT_SAAS_TOOLS_VALUE</span>&#x27;; bash /install-odoo-saas.sh&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>Nếu ta cài trên máy tính cá nhân (local) thì dến đây xem như hoàn thành. Nhưng nếu ta đang cài trên host thì cần phải chạy thêm đoạn mã sau để tiến hành thay đổi cấu hình của Odoo cho phù hợp.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">echo</span> &amp;&amp; INIT_SAAS_TOOLS_VALUE=<span class="string">&#x27; \</span></span><br><span class="line"><span class="string">--print-local-hosts \</span></span><br><span class="line"><span class="string">--odoo-script=/mnt/odoo-source/odoo-bin \</span></span><br><span class="line"><span class="string">--odoo-config=/mnt/config/odoo-server.conf \</span></span><br><span class="line"><span class="string">--suffix=sems.vn \</span></span><br><span class="line"><span class="string">--portal-db-name=portal.&#123;suffix&#125; \</span></span><br><span class="line"><span class="string">--server-db-name=server-1.&#123;suffix&#125; \</span></span><br><span class="line"><span class="string">--plan-template-db-name=template-1.&#123;suffix&#125; \</span></span><br><span class="line"><span class="string">&#x27;</span> &amp;&amp; sudo bash -c <span class="string">&quot;docker exec -u odoo -t odoo bash -c \&quot;python /mnt/addons/it-projects-llc/odoo-saas-tools/saas.py <span class="variable">$&#123;INIT_SAAS_TOOLS_VALUE&#125;</span>\&quot; &gt;&gt; /etc/hosts&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>Đến đây ta có thể hoàn toàn chạy được <code>http://portal.sems.vn</code> với domain <code>sems.vn</code> đã được thiết lập trong tùy chọn lúc thực thi câu lệnh ở trên.</p>
+<p>Mọi cài dặt đã hoàn thành. Một thứ mà bạn có thể thỉnh thoảng thấy trong quá trình cài đặt là Odoo báo lỗi về mã hóa mật khẩu khi tạo mới một Client trong Portal site. Lỗi này tôi vẫn chưa thể giải quyết được ngoài việc cố gắn thực hiện lại quá trình cài đặt.</p>
+<h1 id="Tao-Database"><a href="#Tao-Database" class="headerlink" title="Tạo Database"></a>Tạo Database</h1><h2 id="Tao-database-bang-Backend-voi-tai-khoan-Admin"><a href="#Tao-database-bang-Backend-voi-tai-khoan-Admin" class="headerlink" title="Tạo database bằng Backend với tài khoản Admin"></a>Tạo database bằng Backend với tài khoản Admin</h2><p>Với phương thức này ta cần có tài khoản Admin để có thể đăng nhập vào portal site.</p>
+<ol>
+<li>Đăng nhập <strong>SaaS Portal</strong>. Đường dẫn của SaaS Portal bạn có thể cấu hình lại trong quá trình cài đặt.</li>
+<li>Vào menu trên đầu <strong>SaaS -&gt; Plan</strong>. Chọn Plan muốn tạo. </li>
+<li>Đăng nhập database template (Login Database Template) để tạo nên một database mẫu khi ta tạo cho khách hàng. Ví dụ nếu tạo PoS cho khách hàng thì ta chỉ cần cài đặt sẳn các module của PoS.</li>
+<li>Tạo khách hàng bằng nút <strong>Create Client</strong>.</li>
+<li>Đã xong. Cuối cùng bạn cần login vào client để kiểm tra lại.</li>
+</ol>
+<h2 id="Tao-database-bang-Frontend-voi-tai-khoan-Client"><a href="#Tao-database-bang-Frontend-voi-tai-khoan-Client" class="headerlink" title="Tạo database bằng Frontend với tài khoản Client"></a>Tạo database bằng Frontend với tài khoản Client</h2><p>Khách hàng có thể tự đăng ký để tạo một database riêng cho mình mà không cần Admin. Để tạo theo cách này khách hàng cần phải biết được <code>plan_id</code> (nếu sai <code>plan_id</code> thì hệ thống sẽ tạo ra một database dựa trên mẫu sai nên không dùng được) và nhập thông tin đăng ký để hoàn thành. </p>
+<ol>
+<li>Không cần Login.</li>
+<li>Nhập đường dẫn {portal-domain}&#x2F;page&#x2F;start?plan_id&#x3D;1 (cần xác định đúng <code>plan_id</code>). Gõ tên database muốn tạo. Tên này tương ứng với tên khách hàng và sẽ là sub-domain khi khách hàng sử dụng. Nhập nút tạo.</li>
+<li>Nhưng hệ thống yêu cầu ta đăng nhập. Không có tài khoản do đó ta cần đăng ký. Và nhập đầy đủ thông tin để đăng ký.</li>
+<li>Sau khi đăng ký xong. Một databse mới được tạo và hệ thống sẽ tự động nhảy đến website của khách hàng.</li>
+<li>Mở lên vào sử dụng thôi (Mặt định tài khoản là <code>admin/ admin</code>)</li>
+</ol>
+<h1 id="Nhung-phan-cua-Odoo-SaaS"><a href="#Nhung-phan-cua-Odoo-SaaS" class="headerlink" title="Những phần của Odoo SaaS"></a>Những phần của Odoo SaaS</h1><p>Bình thường Odoo chỉ có 1 database của nó. Nhưng nếu triển khai SaaS thì chúng ta cần đến 3 database để quản lý hệ thống.</p>
+<ol>
+<li><strong>Portal</strong> là một bộ phận chính của hệ thống để ta có thể thao tác đến các server, client, template và plant.</li>
+<li><strong>Server</strong> là kỹ thuật quản lý database. Mục tiêu là quản lý các database của khách hàng (client). Tại đây ta có thể tạo, sửa và xóa database. Đặt biệc là các server có thể cài đặt trên nhiều máy chủ vật lý hay VPS (Virtual Private Server).</li>
+<li><strong>Client</strong> là database của khách hàng. Mỗi khách hàng sẽ có một database riêng và Server sẽ là bộ phận quản lý nó.</li>
+</ol>
+<h1 id="Tai-lieu-tham-khao"><a href="#Tai-lieu-tham-khao" class="headerlink" title="Tài liệu tham khảo"></a>Tài liệu tham khảo</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/it-projects-llc/odoo-saas-tools">Mã nguồn Odoo SaaS từ Github</a></li>
+<li><a target="_blank" rel="noopener" href="https://odoo-saas-tools.readthedocs.io/en/10.0/reference/development.html">Cấu trúc tính năng của Odoo SaaS</a></li>
+<li><a target="_blank" rel="noopener" href="https://it-projects-llc.github.io/odoo-saas-tools/getting-started/">Bài hướng dẫn cài đặt Odoo SaaS bằng Docker</a></li>
+<li><a href="/pdf/2019/odoo-development.pdf">Tài liệu tham khảo về Odds Reference</a></li>
+</ol>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="http://nguyenvantien2009.com/2021/install-odoo-by-docker.html" data-id="cl3zg2pqu0020fkitflh08029" class="article-share-link"><i class="fa fa-share"></i>Chia sẻ</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "Tien Nguyen"
+        },
+        "headline": "Cài đặT Odod SaaS Bằng Docker",
+        "image": "http://nguyenvantien2009.com/viet/2021/install-odoo-by-docker/odoo-vs-sap.png",
+        "keywords": "Docker Odoo SaaS ERP",
+        "genre": "Công cụ",
+        "datePublished": "2019-06-10",
+        "dateCreated": "2019-06-10",
+        "dateModified": "2022-06-02",
+        "url": "http://nguyenvantien2009.com/2021/install-odoo-by-docker.html",
+        "description": "SaaS Odoo được cung cấp bởi một công ty khác. Nó không thuộc Odoo. Do đó sẽ có những vấn đề không tương thích khi cố gắn cài đặt SaaS Odoo. Vì vậy Docker là một chọn lựa tuyệt vời để triển khai Odoo t",
+        "wordCount": 1087
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>Theo dõi:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/nguyenvantien2009" target="_blank" rel="noopener">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="stack-overflow" href="https://stackoverflow.com/users/3343882/tien-nguyen" target="_blank" rel="noopener">
+                        <i class="icon fa fa-stack-overflow"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/nguyenvantien2009" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/viet/2021/phan-loai-cac-thuat-toan-nay-hoc.html" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">Mới hơn</strong>
+        <p class="article-nav-title">
+        
+            Phân Loại Các Thuật Toán Máy Học
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">Mây thẻ</h3>
+        <div class="widget tagcloud">
+            <a href="/viet/tags/API/" style="font-size: 10px;">API</a> <a href="/viet/tags/Algorithm/" style="font-size: 10px;">Algorithm</a> <a href="/viet/tags/Allow-Disable-Accesss-Port/" style="font-size: 10px;">Allow/Disable Accesss Port</a> <a href="/viet/tags/AngularJS/" style="font-size: 10px;">AngularJS</a> <a href="/viet/tags/Approach/" style="font-size: 11.43px;">Approach</a> <a href="/viet/tags/Automatic/" style="font-size: 10px;">Automatic</a> <a href="/viet/tags/Backup-Restore/" style="font-size: 10px;">Backup Restore</a> <a href="/viet/tags/Blog/" style="font-size: 10px;">Blog</a> <a href="/viet/tags/Bootstrap-Screen/" style="font-size: 10px;">Bootstrap Screen</a> <a href="/viet/tags/Build-Docker/" style="font-size: 10px;">Build Docker</a> <a href="/viet/tags/CI-CD/" style="font-size: 12.86px;">CI/CD</a> <a href="/viet/tags/CORS/" style="font-size: 10px;">CORS</a> <a href="/viet/tags/CSS-Screen/" style="font-size: 10px;">CSS Screen</a> <a href="/viet/tags/Cluster-Nodes/" style="font-size: 10px;">Cluster Nodes</a> <a href="/viet/tags/Configuration/" style="font-size: 10px;">Configuration</a> <a href="/viet/tags/Console/" style="font-size: 10px;">Console</a> <a href="/viet/tags/Crontab/" style="font-size: 10px;">Crontab</a> <a href="/viet/tags/Databases/" style="font-size: 10px;">Databases</a> <a href="/viet/tags/Deploy-Docker/" style="font-size: 10px;">Deploy Docker</a> <a href="/viet/tags/Deployment/" style="font-size: 11.43px;">Deployment</a> <a href="/viet/tags/Developer-Tools/" style="font-size: 10px;">Developer Tools</a> <a href="/viet/tags/Device-size/" style="font-size: 10px;">Device size</a> <a href="/viet/tags/Docker/" style="font-size: 20px;">Docker</a> <a href="/viet/tags/Docker-Image-Hosting/" style="font-size: 10px;">Docker Image Hosting</a> <a href="/viet/tags/Docker-Registry/" style="font-size: 10px;">Docker Registry</a> <a href="/viet/tags/Docker-Repository/" style="font-size: 10px;">Docker Repository</a> <a href="/viet/tags/Dockerfile/" style="font-size: 11.43px;">Dockerfile</a> <a href="/viet/tags/Document/" style="font-size: 15.71px;">Document</a> <a href="/viet/tags/ERP/" style="font-size: 11.43px;">ERP</a> <a href="/viet/tags/Firewall/" style="font-size: 10px;">Firewall</a> <a href="/viet/tags/Font-Style/" style="font-size: 10px;">Font Style</a> <a href="/viet/tags/Framework/" style="font-size: 10px;">Framework</a> <a href="/viet/tags/Framework-NodeJS/" style="font-size: 10px;">Framework NodeJS</a> <a href="/viet/tags/Frontend/" style="font-size: 10px;">Frontend</a> <a href="/viet/tags/Git/" style="font-size: 11.43px;">Git</a> <a href="/viet/tags/Github/" style="font-size: 10px;">Github</a> <a href="/viet/tags/Github-Page/" style="font-size: 10px;">Github Page</a> <a href="/viet/tags/Gitlab/" style="font-size: 14.29px;">Gitlab</a> <a href="/viet/tags/Gitlab-Runner/" style="font-size: 10px;">Gitlab Runner</a> <a href="/viet/tags/HapiJS/" style="font-size: 11.43px;">HapiJS</a> <a href="/viet/tags/Hardware/" style="font-size: 10px;">Hardware</a> <a href="/viet/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/viet/tags/Hexo-Hidden-Post-Article/" style="font-size: 10px;">Hexo - Hidden Post - Article</a> <a href="/viet/tags/Hexo-Command/" style="font-size: 10px;">Hexo Command</a> <a href="/viet/tags/How/" style="font-size: 10px;">How</a> <a href="/viet/tags/Icon/" style="font-size: 10px;">Icon</a> <a href="/viet/tags/Install/" style="font-size: 11.43px;">Install</a> <a href="/viet/tags/Install-Databases/" style="font-size: 10px;">Install - Databases</a> <a href="/viet/tags/Install-Odoo/" style="font-size: 10px;">Install Odoo</a> <a href="/viet/tags/Ionic/" style="font-size: 10px;">Ionic</a> <a href="/viet/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/viet/tags/Journey/" style="font-size: 10px;">Journey</a> <a href="/viet/tags/Kill/" style="font-size: 10px;">Kill</a> <a href="/viet/tags/Kill-Process/" style="font-size: 10px;">Kill Process</a> <a href="/viet/tags/Laravel/" style="font-size: 11.43px;">Laravel</a> <a href="/viet/tags/Learn/" style="font-size: 10px;">Learn</a> <a href="/viet/tags/Linux/" style="font-size: 11.43px;">Linux</a> <a href="/viet/tags/Load-Balancing/" style="font-size: 10px;">Load Balancing</a> <a href="/viet/tags/Machine-Learning/" style="font-size: 11.43px;">Machine Learning</a> <a href="/viet/tags/Management-Tools/" style="font-size: 10px;">Management Tools</a> <a href="/viet/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/viet/tags/Microservice/" style="font-size: 12.86px;">Microservice</a> <a href="/viet/tags/MinIO-Storage-Cloud/" style="font-size: 10px;">MinIO - Storage Cloud</a> <a href="/viet/tags/Model/" style="font-size: 10px;">Model</a> <a href="/viet/tags/Moleculer/" style="font-size: 11.43px;">Moleculer</a> <a href="/viet/tags/MoleculerJS/" style="font-size: 11.43px;">MoleculerJS</a> <a href="/viet/tags/MongoDB/" style="font-size: 10px;">MongoDB</a> <a href="/viet/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/viet/tags/NGINX-Proxy/" style="font-size: 10px;">NGINX Proxy</a> <a href="/viet/tags/NPM/" style="font-size: 10px;">NPM</a> <a href="/viet/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/viet/tags/NodeJS/" style="font-size: 17.14px;">NodeJS</a> <a href="/viet/tags/Notification/" style="font-size: 10px;">Notification</a> <a href="/viet/tags/Odoo/" style="font-size: 17.14px;">Odoo</a> <a href="/viet/tags/Odoo-API/" style="font-size: 11.43px;">Odoo API</a> <a href="/viet/tags/Odoo-Docker/" style="font-size: 10px;">Odoo Docker</a> <a href="/viet/tags/Odoo-XML-RPC/" style="font-size: 10px;">Odoo XML-RPC</a> <a href="/viet/tags/OpenAPI/" style="font-size: 12.86px;">OpenAPI</a> <a href="/viet/tags/PDF/" style="font-size: 11.43px;">PDF</a> <a href="/viet/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/viet/tags/PM2/" style="font-size: 10px;">PM2</a> <a href="/viet/tags/Pandoc/" style="font-size: 10px;">Pandoc</a> <a href="/viet/tags/Pankod/" style="font-size: 10px;">Pankod</a> <a href="/viet/tags/Password/" style="font-size: 11.43px;">Password</a> <a href="/viet/tags/PoS/" style="font-size: 12.86px;">PoS</a> <a href="/viet/tags/PoS-Box/" style="font-size: 10px;">PoS Box</a> <a href="/viet/tags/Populate/" style="font-size: 10px;">Populate</a> <a href="/viet/tags/Print-Receipt/" style="font-size: 10px;">Print Receipt</a> <a href="/viet/tags/Printer/" style="font-size: 10px;">Printer</a> <a href="/viet/tags/Private-Registry/" style="font-size: 10px;">Private Registry</a> <a href="/viet/tags/Process/" style="font-size: 11.43px;">Process</a> <a href="/viet/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/viet/tags/Rasberry-Pi/" style="font-size: 10px;">Rasberry Pi</a> <a href="/viet/tags/Raspberry/" style="font-size: 10px;">Raspberry</a> <a href="/viet/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/viet/tags/References/" style="font-size: 10px;">References</a> <a href="/viet/tags/Registry/" style="font-size: 10px;">Registry</a> <a href="/viet/tags/Report/" style="font-size: 10px;">Report</a> <a href="/viet/tags/Research/" style="font-size: 11.43px;">Research</a> <a href="/viet/tags/Rest/" style="font-size: 10px;">Rest</a> <a href="/viet/tags/Restful/" style="font-size: 11.43px;">Restful</a> <a href="/viet/tags/SSL/" style="font-size: 10px;">SSL</a> <a href="/viet/tags/SSL-Certification/" style="font-size: 10px;">SSL Certification</a> <a href="/viet/tags/SaaS/" style="font-size: 10px;">SaaS</a> <a href="/viet/tags/Server/" style="font-size: 18.57px;">Server</a> <a href="/viet/tags/Setup/" style="font-size: 10px;">Setup</a> <a href="/viet/tags/Signature/" style="font-size: 10px;">Signature</a> <a href="/viet/tags/Slack/" style="font-size: 11.43px;">Slack</a> <a href="/viet/tags/Slack-Webhook/" style="font-size: 10px;">Slack Webhook</a> <a href="/viet/tags/Software-Design/" style="font-size: 10px;">Software Design</a> <a href="/viet/tags/Spring-Boot/" style="font-size: 10px;">Spring Boot</a> <a href="/viet/tags/Star/" style="font-size: 10px;">Star</a> <a href="/viet/tags/Starter/" style="font-size: 11.43px;">Starter</a> <a href="/viet/tags/SublimeText/" style="font-size: 10px;">SublimeText</a> <a href="/viet/tags/Swagger/" style="font-size: 12.86px;">Swagger</a> <a href="/viet/tags/Syspass/" style="font-size: 10px;">Syspass</a> <a href="/viet/tags/Transporters/" style="font-size: 10px;">Transporters</a> <a href="/viet/tags/Trello/" style="font-size: 10px;">Trello</a> <a href="/viet/tags/Typescript/" style="font-size: 10px;">Typescript</a> <a href="/viet/tags/UI-Component/" style="font-size: 10px;">UI Component</a> <a href="/viet/tags/Ubuntu/" style="font-size: 14.29px;">Ubuntu</a> <a href="/viet/tags/Vim/" style="font-size: 10px;">Vim</a> <a href="/viet/tags/Website/" style="font-size: 10px;">Website</a> <a href="/viet/tags/Window/" style="font-size: 10px;">Window</a> <a href="/viet/tags/Wireless/" style="font-size: 10px;">Wireless</a> <a href="/viet/tags/Wireless-Raspberry-Pi/" style="font-size: 10px;">Wireless Raspberry Pi</a> <a href="/viet/tags/Wordpress/" style="font-size: 11.43px;">Wordpress</a> <a href="/viet/tags/Wordpress-Theme/" style="font-size: 10px;">Wordpress Theme</a> <a href="/viet/tags/X-Printer/" style="font-size: 10px;">X-Printer</a> <a href="/viet/tags/XML-RPC/" style="font-size: 11.43px;">XML-RPC</a> <a href="/viet/tags/Yarn/" style="font-size: 10px;">Yarn</a> <a href="/viet/tags/Zoom/" style="font-size: 10px;">Zoom</a> <a href="/viet/tags/document/" style="font-size: 10px;">document</a> <a href="/viet/tags/document-rest-api/" style="font-size: 10px;">document rest api</a> <a href="/viet/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/viet/tags/swagger-edit/" style="font-size: 10px;">swagger edit</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">Liên kết</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://nguyenvantien2009.com">Tien_Nguyen_Site</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/viet/" class="logo"></a>
+                </h1>
+                <p>&copy; 2022 Tien Nguyen</p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'nguyenvantien2009';
+    
+    
+    var disqus_url = 'http://nguyenvantien2009.com/2021/install-odoo-by-docker.html';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/viet/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/viet/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML.js"></script>
+
+    
+
+    
+    
+      <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+  window.cookieconsent.initialise({
+    "palette": {
+      "popup": {
+        "background": "#f0f0f0",
+        "text": "#777777"
+      },
+      "button": {
+        "background": "#82b965",
+        "text": "#ffffff"
+      }
+    },
+    "theme": "edgeless"
+  });
+</script>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/viet/js/main.js"></script>
+
+
+</body>
+</html>

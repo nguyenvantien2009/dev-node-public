@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>Establish a Wireless Connection for the Raspberry Pi | Bài viết Tiển Nguyễn</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Rasberry Pi,Wireless,Wireless Raspberry Pi" />
+    
+    <meta name="description" content="Establish a wireless connection for the Raspberry Pi  Install RaspberryInstalling the Raspbian operating system is obvious before setting up a wireless connection. Since the installation of the Raspbi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Establish a Wireless Connection for the Raspberry Pi">
+<meta property="og:url" content="http://nguyenvantien2009.com/2021/establish-a-wireless-connection-for-the-raspberry-pi.html">
+<meta property="og:site_name" content="Bài viết Tiển Nguyễn">
+<meta property="og:description" content="Establish a wireless connection for the Raspberry Pi  Install RaspberryInstalling the Raspbian operating system is obvious before setting up a wireless connection. Since the installation of the Raspbi">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:image" content="http://nguyenvantien2009.com/viet/2021/establish-a-wireless-connection-for-the-raspberry-pi/connect-wireless.jpg">
+<meta property="article:published_time" content="2021-02-08T17:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-02T08:35:39.513Z">
+<meta property="article:author" content="Tien Nguyen">
+<meta property="article:tag" content="Rasberry Pi">
+<meta property="article:tag" content="Wireless">
+<meta property="article:tag" content="Wireless Raspberry Pi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://nguyenvantien2009.com/viet/2021/establish-a-wireless-connection-for-the-raspberry-pi/connect-wireless.jpg">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/viet/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/viet/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/viet/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/viet/css/style.css">
+
+
+    
+<script src="/viet/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/viet/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/viet/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-61220253-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-61220253-1');
+</script>
+<!-- End Google Analytics -->
+
+    
+    
+    
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+    
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/viet/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/viet/">Trang chủ</a>
+                                </li>
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Cong-cu/">Công cụ</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Ha-tang/">Hạ tầng</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Ly-luan/">Lý luận</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Lap-trinh/">Lập trình</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/May-hoc/">Máy học</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Thiet-ke/">Thiết kế</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Thu-thuat/">Thủ thuật</a></li></ul>
+                                
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/viet/about/index.html">Giới thiệu</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Tìm kiếm" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Gõ gì đó..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Bài viết',
+            PAGES: 'Trang',
+            CATEGORIES: 'Chuyên mục',
+            TAGS: 'Thẻ',
+            UNTITLED: '(Không đề)',
+        },
+        ROOT_URL: '/viet/',
+        CONTENT_URL: '/viet/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/viet/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/viet/categories/Ha-tang/">Hạ tầng</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-2021/establish-a-wireless-connection-for-the-raspberry-pi" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Establish a Wireless Connection for the Raspberry Pi
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/viet/2021/establish-a-wireless-connection-for-the-raspberry-pi.html" class="article-date">
+       <time datetime="2021-02-08T17:00:00.000Z" itemprop="datePublished">09-02-2021</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/viet/2021/establish-a-wireless-connection-for-the-raspberry-pi.html" class="article-date">
+     <time datetime="2022-06-02T08:35:39.513Z" itemprop="dateModified">02-06-2022</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/viet/tags/Rasberry-Pi/" rel="tag">Rasberry Pi</a>, <a class="tag-link-link" href="/viet/tags/Wireless/" rel="tag">Wireless</a>, <a class="tag-link-link" href="/viet/tags/Wireless-Raspberry-Pi/" rel="tag">Wireless Raspberry Pi</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <h1 id="Establish-a-wireless-connection-for-the-Raspberry-Pi"><a href="#Establish-a-wireless-connection-for-the-Raspberry-Pi" class="headerlink" title="Establish a wireless connection for the Raspberry Pi"></a>Establish a wireless connection for the Raspberry Pi</h1><!-- toc -->
+
+<h2 id="Install-Raspberry"><a href="#Install-Raspberry" class="headerlink" title="Install Raspberry"></a>Install Raspberry</h2><p>Installing the Raspbian operating system is obvious before setting up a wireless connection. Since the installation of the Raspbian operating system is quiet long, it will be covered in the post with links <a href="/install-raspbian-os-in-raspberry-pi/install-raspbian-os-in-raspberry-pi.html">Install Raspbian OS in Raspberry Pi</a>.</p>
+<p><img src="/viet/2021/establish-a-wireless-connection-for-the-raspberry-pi/connect-wireless.jpg" alt="Connect Wireless Raspbian OS"></p>
+<h2 id="Setting-connect-wireless-with-monitor"><a href="#Setting-connect-wireless-with-monitor" class="headerlink" title="Setting connect wireless with monitor"></a>Setting connect wireless with monitor</h2><p>If we have a monitor connect to Raspberry we would be more convenient to manipulate. We no need use <strong>SSH</strong> to control from machine. Below are the instructions to connect wireless to Raspbian.</p>
+<h3 id="Config-wireless-connect-by-Raspbian-OS-Lite"><a href="#Config-wireless-connect-by-Raspbian-OS-Lite" class="headerlink" title="Config wireless connect by Raspbian OS Lite."></a>Config wireless connect by Raspbian OS Lite.</h3><p>Raspbian Lite is light operation system of Raspbian. It don’t have a graphical interface but only interactive graphics in the form of a console. It is commonly used in IoT applications because it is lightweight and can be less energy consuming than a full operating system.</p>
+<p>When start Raspbian OS. If the system ask username and password to login. We can try with username is <code>pi</code> and password <code>raspberry</code>. But still can not login, maybe default account be changed so should search in Google.</p>
+<p>I think we don’t need much description for this setup because when type <code>raspi-config</code>, we easily see all the options for being able to establish a wireless connection.</p>
+<p><em>Notes: We also need enable SSH of Raspbian in options show in monitor. It is also easy to find and setting up.</em></p>
+<h3 id="Config-wireless-connect-by-Command-Line"><a href="#Config-wireless-connect-by-Command-Line" class="headerlink" title="Config wireless connect by Command Line."></a>Config wireless connect by Command Line.</h3><ol>
+<li>Check wireless available in Raspbian <code>sudo iwlist wlan0 scan</code>?</li>
+<li>Add config file <code>wpa_supplicant.conf</code> in <code>/boot</code>.</li>
+<li>Edit contain of config file <code>wpa_supplicant.conf</code>.</li>
+<li>Reload config to read and connect wireless by <code>sudo wpa_cli -i wlan0 reconfigure</code>.</li>
+</ol>
+<p>And here are the detailed explanations of the steps:</p>
+<p><strong>Step 1:</strong> We need a monitor and keyboard is connected to Raspberry before start Raspbian OS. In the Raspberry, scan wireless which it can see by <code>sudo iwlist wlan0 scan</code> command line. That command line, we see <em>SSID</em> of wireless to use for <strong>Step 2</strong> or <strong>Step 3</strong>.</p>
+<p><strong>Step 2:</strong> Insert <em>SD Card</em> with installed <em>Raspbian OS</em> than add <code>wpa_supplicant.conf</code> file to <code>/root</code>. This file will be loaded into folder <code>/etc/wpa_supplicant/wpa_supplicant.conf</code> Raspbian is first booted in device. The content of the file is mentioned in <a href="#wpa_supplicant-config">wpa_supplicant.config</a></p>
+<p><strong>Step 3:</strong> (Optional) If you set config wireless connection in <strong>Step 2</strong>, we can skip this step. But we also can change config after it be loaded in Raspbian. If need change config in <code>wpa_supplicant.conf</code> file, need use <code>nano /etc/wpa_supplicant/wpa_supplicant.conf</code>  and refer to contain of <a href="#wpa_supplicant-config">wpa_supplicant.config</a>.</p>
+<p><strong>Step 4:</strong> (Optional) If we change config in <strong>Step 3</strong>, we need reload network configuration. Let try <code>sudo wpa_cli -i wlan0 reconfigure</code> to reload configuration.</p>
+<h3 id="Setting-connect-wireless-without-monitor-or-keyboard"><a href="#Setting-connect-wireless-without-monitor-or-keyboard" class="headerlink" title="Setting connect wireless without monitor or keyboard"></a>Setting connect wireless without monitor or keyboard</h3><p>If you don’t have monitor and keyboard, we can not choose options by monitor and keyboard. So we must use choose <a href="#config-wireless-connect-by-command-line">Config wireless connect by Command Line.</a></p>
+<h2 id="Files"><a href="#Files" class="headerlink" title="Files"></a>Files</h2><h3 id="wpa-supplicant-conf"><a href="#wpa-supplicant-conf" class="headerlink" title="wpa_supplicant.conf"></a><code>wpa_supplicant.conf</code></h3><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ctrl_interface<span class="operator">=</span>DIR<span class="operator">=/</span>var/run/wpa_supplicant GROUP<span class="operator">=</span>netdev</span><br><span class="line">update_config<span class="operator">=</span><span class="number">1</span></span><br><span class="line"><span class="attribute">country</span><span class="operator">=</span>&lt;Insert <span class="number">2</span> letter ISO <span class="number">3166</span>-<span class="number">1</span> country code here&gt;</span><br><span class="line"><span class="attribute">network</span><span class="operator">=</span>&#123;</span><br><span class="line">    ssid<span class="operator">=</span><span class="string">&quot;&lt;Name of your wireless LAN&gt;&quot;</span></span><br><span class="line">    psk<span class="operator">=</span><span class="string">&quot;&lt;Password for your wireless LAN&gt;&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>SSID</code> is name of your wireless LAN. [SSID Detection][]</li>
+<li><code>psk</code> is password for your wireless LAN.</li>
+</ul>
+<h3 id="Pictures"><a href="#Pictures" class="headerlink" title="Pictures"></a>Pictures</h3><p><img src="/viet/2021/establish-a-wireless-connection-for-the-raspberry-pi/learn_raspberry_pi_wpa_conf_edit.jpg" alt="Edit wpa_supplicant. Source by https://learn.adafruit.com/"></p>
+<p><img src="/viet/2021/establish-a-wireless-connection-for-the-raspberry-pi/learn_raspberry_pi_wpa_conf_nano.jpg" alt="Edit wpa supplicant config"></p>
+<p>Edit config network in Raspberry</p>
+<p><img src="/viet/2021/establish-a-wireless-connection-for-the-raspberry-pi/learn_raspberry_pi_wpa_conf_edit_2.jpg"></p>
+<p>Reload network config.</p>
+<p><img src="/viet/2021/establish-a-wireless-connection-for-the-raspberry-pi/learn_raspberry_pi_wpa_conf_wpacli.jpg"></p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://www.raspberrypi.org/documentation/configuration/wireless/headless.md">Setting up a Raspberry Pi headless from Raspberry</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.raspberrypi.org/documentation/configuration/raspi-config.md">Raspi-Config command line</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.raspberrypi.org/documentation/configuration/wireless/wireless-cli.md">Setting up a wireless LAN via the command line</a></li>
+<li><a target="_blank" rel="noopener" href="https://raspberrypi.vn/cai-dat-wifi-tren-raspberry-6843.pi">Cài đặt Wifi trên Raspberry bằng wpa_supplicant.conf</a></li>
+</ol>
+<p>[^1]: SSID is short for Service Set Identifier. [SSID Detection][] </p>
+<p>[SSID Detection]: <a target="_blank" rel="noopener" href="https://support.brother.com/g/b/faqend.aspx?c=vn&amp;lang=en&amp;prod=p750weas&amp;faqid=faqp00100049_000">https://support.brother.com/g/b/faqend.aspx?c=vn&amp;lang=en&amp;prod=p750weas&amp;faqid=faqp00100049_000</a>	“How to get SSID of wireless”</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="http://nguyenvantien2009.com/2021/establish-a-wireless-connection-for-the-raspberry-pi.html" data-id="cl3zg2pqk0014fkitbpqa4uw0" class="article-share-link"><i class="fa fa-share"></i>Chia sẻ</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "Tien Nguyen"
+        },
+        "headline": "Establish a Wireless Connection for the Raspberry Pi",
+        "image": "http://nguyenvantien2009.com/viet/2021/establish-a-wireless-connection-for-the-raspberry-pi/connect-wireless.jpg",
+        "keywords": "Rasberry Pi Wireless Wireless Raspberry Pi",
+        "genre": "Hạ tầng",
+        "datePublished": "2021-02-09",
+        "dateCreated": "2021-02-09",
+        "dateModified": "2022-06-02",
+        "url": "http://nguyenvantien2009.com/2021/establish-a-wireless-connection-for-the-raspberry-pi.html",
+        "description": "Establish a wireless connection for the Raspberry Pi
+
+Install RaspberryInstalling the Raspbian operating system is obvious before setting up a wireless connection. Since the installation of the Raspbi",
+        "wordCount": 664
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>Theo dõi:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/nguyenvantien2009" target="_blank" rel="noopener">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="stack-overflow" href="https://stackoverflow.com/users/3343882/tien-nguyen" target="_blank" rel="noopener">
+                        <i class="icon fa fa-stack-overflow"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/nguyenvantien2009" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/viet/2021/pos-machine-brands-are-being-used-popularly-in-vietnam.html" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">Mới hơn</strong>
+        <p class="article-nav-title">
+        
+            PoS Machine Brands Are Being Used Popularly in Vietnam
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/viet/2021/setup-xprinter-connection-to-print-receipt-html-format.html" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">Cũ hơn</strong>
+        <p class="article-nav-title">Setup X-Printer Connection to Print Receipt HTML Format</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">Mây thẻ</h3>
+        <div class="widget tagcloud">
+            <a href="/viet/tags/API/" style="font-size: 10px;">API</a> <a href="/viet/tags/Algorithm/" style="font-size: 10px;">Algorithm</a> <a href="/viet/tags/Allow-Disable-Accesss-Port/" style="font-size: 10px;">Allow/Disable Accesss Port</a> <a href="/viet/tags/AngularJS/" style="font-size: 10px;">AngularJS</a> <a href="/viet/tags/Approach/" style="font-size: 11.43px;">Approach</a> <a href="/viet/tags/Automatic/" style="font-size: 10px;">Automatic</a> <a href="/viet/tags/Backup-Restore/" style="font-size: 10px;">Backup Restore</a> <a href="/viet/tags/Blog/" style="font-size: 10px;">Blog</a> <a href="/viet/tags/Bootstrap-Screen/" style="font-size: 10px;">Bootstrap Screen</a> <a href="/viet/tags/Build-Docker/" style="font-size: 10px;">Build Docker</a> <a href="/viet/tags/CI-CD/" style="font-size: 12.86px;">CI/CD</a> <a href="/viet/tags/CORS/" style="font-size: 10px;">CORS</a> <a href="/viet/tags/CSS-Screen/" style="font-size: 10px;">CSS Screen</a> <a href="/viet/tags/Cluster-Nodes/" style="font-size: 10px;">Cluster Nodes</a> <a href="/viet/tags/Configuration/" style="font-size: 10px;">Configuration</a> <a href="/viet/tags/Console/" style="font-size: 10px;">Console</a> <a href="/viet/tags/Crontab/" style="font-size: 10px;">Crontab</a> <a href="/viet/tags/Databases/" style="font-size: 10px;">Databases</a> <a href="/viet/tags/Deploy-Docker/" style="font-size: 10px;">Deploy Docker</a> <a href="/viet/tags/Deployment/" style="font-size: 11.43px;">Deployment</a> <a href="/viet/tags/Developer-Tools/" style="font-size: 10px;">Developer Tools</a> <a href="/viet/tags/Device-size/" style="font-size: 10px;">Device size</a> <a href="/viet/tags/Docker/" style="font-size: 20px;">Docker</a> <a href="/viet/tags/Docker-Image-Hosting/" style="font-size: 10px;">Docker Image Hosting</a> <a href="/viet/tags/Docker-Registry/" style="font-size: 10px;">Docker Registry</a> <a href="/viet/tags/Docker-Repository/" style="font-size: 10px;">Docker Repository</a> <a href="/viet/tags/Dockerfile/" style="font-size: 11.43px;">Dockerfile</a> <a href="/viet/tags/Document/" style="font-size: 15.71px;">Document</a> <a href="/viet/tags/ERP/" style="font-size: 11.43px;">ERP</a> <a href="/viet/tags/Firewall/" style="font-size: 10px;">Firewall</a> <a href="/viet/tags/Font-Style/" style="font-size: 10px;">Font Style</a> <a href="/viet/tags/Framework/" style="font-size: 10px;">Framework</a> <a href="/viet/tags/Framework-NodeJS/" style="font-size: 10px;">Framework NodeJS</a> <a href="/viet/tags/Frontend/" style="font-size: 10px;">Frontend</a> <a href="/viet/tags/Git/" style="font-size: 11.43px;">Git</a> <a href="/viet/tags/Github/" style="font-size: 10px;">Github</a> <a href="/viet/tags/Github-Page/" style="font-size: 10px;">Github Page</a> <a href="/viet/tags/Gitlab/" style="font-size: 14.29px;">Gitlab</a> <a href="/viet/tags/Gitlab-Runner/" style="font-size: 10px;">Gitlab Runner</a> <a href="/viet/tags/HapiJS/" style="font-size: 11.43px;">HapiJS</a> <a href="/viet/tags/Hardware/" style="font-size: 10px;">Hardware</a> <a href="/viet/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/viet/tags/Hexo-Hidden-Post-Article/" style="font-size: 10px;">Hexo - Hidden Post - Article</a> <a href="/viet/tags/Hexo-Command/" style="font-size: 10px;">Hexo Command</a> <a href="/viet/tags/How/" style="font-size: 10px;">How</a> <a href="/viet/tags/Icon/" style="font-size: 10px;">Icon</a> <a href="/viet/tags/Install/" style="font-size: 11.43px;">Install</a> <a href="/viet/tags/Install-Databases/" style="font-size: 10px;">Install - Databases</a> <a href="/viet/tags/Install-Odoo/" style="font-size: 10px;">Install Odoo</a> <a href="/viet/tags/Ionic/" style="font-size: 10px;">Ionic</a> <a href="/viet/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/viet/tags/Journey/" style="font-size: 10px;">Journey</a> <a href="/viet/tags/Kill/" style="font-size: 10px;">Kill</a> <a href="/viet/tags/Kill-Process/" style="font-size: 10px;">Kill Process</a> <a href="/viet/tags/Laravel/" style="font-size: 11.43px;">Laravel</a> <a href="/viet/tags/Learn/" style="font-size: 10px;">Learn</a> <a href="/viet/tags/Linux/" style="font-size: 11.43px;">Linux</a> <a href="/viet/tags/Load-Balancing/" style="font-size: 10px;">Load Balancing</a> <a href="/viet/tags/Machine-Learning/" style="font-size: 11.43px;">Machine Learning</a> <a href="/viet/tags/Management-Tools/" style="font-size: 10px;">Management Tools</a> <a href="/viet/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/viet/tags/Microservice/" style="font-size: 12.86px;">Microservice</a> <a href="/viet/tags/MinIO-Storage-Cloud/" style="font-size: 10px;">MinIO - Storage Cloud</a> <a href="/viet/tags/Model/" style="font-size: 10px;">Model</a> <a href="/viet/tags/Moleculer/" style="font-size: 11.43px;">Moleculer</a> <a href="/viet/tags/MoleculerJS/" style="font-size: 11.43px;">MoleculerJS</a> <a href="/viet/tags/MongoDB/" style="font-size: 10px;">MongoDB</a> <a href="/viet/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/viet/tags/NGINX-Proxy/" style="font-size: 10px;">NGINX Proxy</a> <a href="/viet/tags/NPM/" style="font-size: 10px;">NPM</a> <a href="/viet/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/viet/tags/NodeJS/" style="font-size: 17.14px;">NodeJS</a> <a href="/viet/tags/Notification/" style="font-size: 10px;">Notification</a> <a href="/viet/tags/Odoo/" style="font-size: 17.14px;">Odoo</a> <a href="/viet/tags/Odoo-API/" style="font-size: 11.43px;">Odoo API</a> <a href="/viet/tags/Odoo-Docker/" style="font-size: 10px;">Odoo Docker</a> <a href="/viet/tags/Odoo-XML-RPC/" style="font-size: 10px;">Odoo XML-RPC</a> <a href="/viet/tags/OpenAPI/" style="font-size: 12.86px;">OpenAPI</a> <a href="/viet/tags/PDF/" style="font-size: 11.43px;">PDF</a> <a href="/viet/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/viet/tags/PM2/" style="font-size: 10px;">PM2</a> <a href="/viet/tags/Pandoc/" style="font-size: 10px;">Pandoc</a> <a href="/viet/tags/Pankod/" style="font-size: 10px;">Pankod</a> <a href="/viet/tags/Password/" style="font-size: 11.43px;">Password</a> <a href="/viet/tags/PoS/" style="font-size: 12.86px;">PoS</a> <a href="/viet/tags/PoS-Box/" style="font-size: 10px;">PoS Box</a> <a href="/viet/tags/Populate/" style="font-size: 10px;">Populate</a> <a href="/viet/tags/Print-Receipt/" style="font-size: 10px;">Print Receipt</a> <a href="/viet/tags/Printer/" style="font-size: 10px;">Printer</a> <a href="/viet/tags/Private-Registry/" style="font-size: 10px;">Private Registry</a> <a href="/viet/tags/Process/" style="font-size: 11.43px;">Process</a> <a href="/viet/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/viet/tags/Rasberry-Pi/" style="font-size: 10px;">Rasberry Pi</a> <a href="/viet/tags/Raspberry/" style="font-size: 10px;">Raspberry</a> <a href="/viet/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/viet/tags/References/" style="font-size: 10px;">References</a> <a href="/viet/tags/Registry/" style="font-size: 10px;">Registry</a> <a href="/viet/tags/Report/" style="font-size: 10px;">Report</a> <a href="/viet/tags/Research/" style="font-size: 11.43px;">Research</a> <a href="/viet/tags/Rest/" style="font-size: 10px;">Rest</a> <a href="/viet/tags/Restful/" style="font-size: 11.43px;">Restful</a> <a href="/viet/tags/SSL/" style="font-size: 10px;">SSL</a> <a href="/viet/tags/SSL-Certification/" style="font-size: 10px;">SSL Certification</a> <a href="/viet/tags/SaaS/" style="font-size: 10px;">SaaS</a> <a href="/viet/tags/Server/" style="font-size: 18.57px;">Server</a> <a href="/viet/tags/Setup/" style="font-size: 10px;">Setup</a> <a href="/viet/tags/Signature/" style="font-size: 10px;">Signature</a> <a href="/viet/tags/Slack/" style="font-size: 11.43px;">Slack</a> <a href="/viet/tags/Slack-Webhook/" style="font-size: 10px;">Slack Webhook</a> <a href="/viet/tags/Software-Design/" style="font-size: 10px;">Software Design</a> <a href="/viet/tags/Spring-Boot/" style="font-size: 10px;">Spring Boot</a> <a href="/viet/tags/Star/" style="font-size: 10px;">Star</a> <a href="/viet/tags/Starter/" style="font-size: 11.43px;">Starter</a> <a href="/viet/tags/SublimeText/" style="font-size: 10px;">SublimeText</a> <a href="/viet/tags/Swagger/" style="font-size: 12.86px;">Swagger</a> <a href="/viet/tags/Syspass/" style="font-size: 10px;">Syspass</a> <a href="/viet/tags/Transporters/" style="font-size: 10px;">Transporters</a> <a href="/viet/tags/Trello/" style="font-size: 10px;">Trello</a> <a href="/viet/tags/Typescript/" style="font-size: 10px;">Typescript</a> <a href="/viet/tags/UI-Component/" style="font-size: 10px;">UI Component</a> <a href="/viet/tags/Ubuntu/" style="font-size: 14.29px;">Ubuntu</a> <a href="/viet/tags/Vim/" style="font-size: 10px;">Vim</a> <a href="/viet/tags/Website/" style="font-size: 10px;">Website</a> <a href="/viet/tags/Window/" style="font-size: 10px;">Window</a> <a href="/viet/tags/Wireless/" style="font-size: 10px;">Wireless</a> <a href="/viet/tags/Wireless-Raspberry-Pi/" style="font-size: 10px;">Wireless Raspberry Pi</a> <a href="/viet/tags/Wordpress/" style="font-size: 11.43px;">Wordpress</a> <a href="/viet/tags/Wordpress-Theme/" style="font-size: 10px;">Wordpress Theme</a> <a href="/viet/tags/X-Printer/" style="font-size: 10px;">X-Printer</a> <a href="/viet/tags/XML-RPC/" style="font-size: 11.43px;">XML-RPC</a> <a href="/viet/tags/Yarn/" style="font-size: 10px;">Yarn</a> <a href="/viet/tags/Zoom/" style="font-size: 10px;">Zoom</a> <a href="/viet/tags/document/" style="font-size: 10px;">document</a> <a href="/viet/tags/document-rest-api/" style="font-size: 10px;">document rest api</a> <a href="/viet/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/viet/tags/swagger-edit/" style="font-size: 10px;">swagger edit</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">Liên kết</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://nguyenvantien2009.com">Tien_Nguyen_Site</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/viet/" class="logo"></a>
+                </h1>
+                <p>&copy; 2022 Tien Nguyen</p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'nguyenvantien2009';
+    
+    
+    var disqus_url = 'http://nguyenvantien2009.com/2021/establish-a-wireless-connection-for-the-raspberry-pi.html';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/viet/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/viet/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML.js"></script>
+
+    
+
+    
+    
+      <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+  window.cookieconsent.initialise({
+    "palette": {
+      "popup": {
+        "background": "#f0f0f0",
+        "text": "#777777"
+      },
+      "button": {
+        "background": "#82b965",
+        "text": "#ffffff"
+      }
+    },
+    "theme": "edgeless"
+  });
+</script>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/viet/js/main.js"></script>
+
+
+</body>
+</html>

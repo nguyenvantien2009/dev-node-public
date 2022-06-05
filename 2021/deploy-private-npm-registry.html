@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>Deploy Private NPM Registry | Bài viết Tiển Nguyễn</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Registry,NPM,Private Registry,NodeJS" />
+    
+    <meta name="description" content="1. Install Verdaccio 2. Build NPM module 3. Add&#x2F;push to registry in client 4. Using 4.1 NPM Run 4.2 Docker Compose   5. References      default registry npm build library version and add depen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deploy Private NPM Registry">
+<meta property="og:url" content="http://nguyenvantien2009.com/2021/deploy-private-npm-registry.html">
+<meta property="og:site_name" content="Bài viết Tiển Nguyễn">
+<meta property="og:description" content="1. Install Verdaccio 2. Build NPM module 3. Add&#x2F;push to registry in client 4. Using 4.1 NPM Run 4.2 Docker Compose   5. References      default registry npm build library version and add depen">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:image" content="http://nguyenvantien2009.com/viet/2021/deploy-private-npm-registry/verdaccio.png">
+<meta property="article:published_time" content="2020-09-10T17:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-02T08:35:26.187Z">
+<meta property="article:author" content="Tien Nguyen">
+<meta property="article:tag" content="Registry">
+<meta property="article:tag" content="NPM">
+<meta property="article:tag" content="Private Registry">
+<meta property="article:tag" content="NodeJS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://nguyenvantien2009.com/viet/2021/deploy-private-npm-registry/verdaccio.png">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/viet/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/viet/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/viet/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/viet/css/style.css">
+
+
+    
+<script src="/viet/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/viet/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/viet/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-61220253-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-61220253-1');
+</script>
+<!-- End Google Analytics -->
+
+    
+    
+    
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+    
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/viet/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/viet/">Trang chủ</a>
+                                </li>
+                            
+                                    <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Cong-cu/">Công cụ</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Ha-tang/">Hạ tầng</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Ly-luan/">Lý luận</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Lap-trinh/">Lập trình</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/May-hoc/">Máy học</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Thiet-ke/">Thiết kế</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/viet/categories/Thu-thuat/">Thủ thuật</a></li></ul>
+                                
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/viet/about/index.html">Giới thiệu</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Tìm kiếm" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Gõ gì đó..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Bài viết',
+            PAGES: 'Trang',
+            CATEGORIES: 'Chuyên mục',
+            TAGS: 'Thẻ',
+            UNTITLED: '(Không đề)',
+        },
+        ROOT_URL: '/viet/',
+        CONTENT_URL: '/viet/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/viet/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/viet/categories/Ha-tang/">Hạ tầng</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-2021/deploy-private-npm-registry" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Deploy Private NPM Registry
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+  <div class="article-date">
+    <i class="fa fa-calendar"></i>
+    <a href="/viet/2021/deploy-private-npm-registry.html" class="article-date">
+       <time datetime="2020-09-10T17:00:00.000Z" itemprop="datePublished">11-09-2020</time>
+    </a>
+  </div>
+
+
+<div class="article-date">
+  <i class="fa fa-calendar-plus-o"></i>
+  <a href="/viet/2021/deploy-private-npm-registry.html" class="article-date">
+     <time datetime="2022-06-02T08:35:26.187Z" itemprop="dateModified">02-06-2022</time>
+  </a>
+</div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/viet/tags/NPM/" rel="tag">NPM</a>, <a class="tag-link-link" href="/viet/tags/NodeJS/" rel="tag">NodeJS</a>, <a class="tag-link-link" href="/viet/tags/Private-Registry/" rel="tag">Private Registry</a>, <a class="tag-link-link" href="/viet/tags/Registry/" rel="tag">Registry</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <!-- MarkdownTOC autoanchor="true" autolink="true" -->
+
+<ul>
+<li><a href="#1-install-verdaccio">1. Install Verdaccio</a></li>
+<li><a href="#2-build-npm-module">2. Build NPM module</a></li>
+<li><a href="#3-addpush-to-registry-in-client">3. Add&#x2F;push to registry in client</a></li>
+<li><a href="#4-using">4. Using</a><ul>
+<li><a href="#41-npm-run">4.1 NPM Run</a></li>
+<li><a href="#42-docker-compose">4.2 Docker Compose</a></li>
+</ul>
+</li>
+<li><a href="#5-references">5. References</a></li>
+</ul>
+<!-- /MarkdownTOC -->
+
+
+<ul>
+<li>default registry npm</li>
+<li>build library version and add dependecy: manage version, esier to deploy,</li>
+</ul>
+<p><img src="/viet/2021/deploy-private-npm-registry/verdaccio.png" alt="Verdaccio"></p>
+<p><a id="1-install-verdaccio"></a></p>
+<h1 id="1-Install-Verdaccio"><a href="#1-Install-Verdaccio" class="headerlink" title="1. Install Verdaccio"></a>1. Install Verdaccio</h1><p>Default config need be created <code>config.yaml</code> in <code>/docker-app/verdaccio/conf</code> folder.</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">storage:</span> <span class="string">./storage</span></span><br><span class="line"><span class="attr">auth:</span></span><br><span class="line">  <span class="attr">htpasswd:</span></span><br><span class="line">    <span class="attr">file:</span> <span class="string">./htpasswd</span></span><br><span class="line"><span class="attr">uplinks:</span></span><br><span class="line">  <span class="attr">npmjs:</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">https://registry.npmjs.org/</span></span><br><span class="line"><span class="attr">packages:</span></span><br><span class="line">  <span class="string">&#x27;@*/*&#x27;</span><span class="string">:</span></span><br><span class="line">    <span class="attr">access:</span> <span class="string">$all</span></span><br><span class="line">    <span class="attr">publish:</span> <span class="string">$authenticated</span></span><br><span class="line">    <span class="attr">proxy:</span> <span class="string">npmjs</span></span><br><span class="line">  <span class="string">&#x27;**&#x27;</span><span class="string">:</span></span><br><span class="line">    <span class="attr">proxy:</span> <span class="string">npmjs</span></span><br><span class="line"><span class="attr">logs:</span></span><br><span class="line">  <span class="bullet">-</span> &#123;<span class="attr">type:</span> <span class="string">stdout</span>, <span class="attr">format:</span> <span class="string">pretty</span>, <span class="attr">level:</span> <span class="string">http</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>If we need change config, we can reference to [<a target="_blank" rel="noopener" href="https://verdaccio.org/docs/en/configuration.html#default-configuration]">https://verdaccio.org/docs/en/configuration.html#default-configuration]</a>.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">V_PATH=/docker-app/verdaccio;</span><br><span class="line">docker run -it --<span class="built_in">rm</span> --name verdaccio \</span><br><span class="line">  -p 4873:4873 \</span><br><span class="line">  -v <span class="variable">$V_PATH</span>/conf:/verdaccio/conf \</span><br><span class="line">  -v <span class="variable">$V_PATH</span>/storage:/verdaccio/storage \</span><br><span class="line">  -v <span class="variable">$V_PATH</span>/plugins:/verdaccio/plugins \</span><br><span class="line">  verdaccio/verdaccio</span><br></pre></td></tr></table></figure>
+
+<p>WARNING: Before run docker Verdaccio, we need add permission for folders with UserID is 10001 (default user in Verdaccio docker).</p>
+<p>Here are the default Verdaccio parameters:</p>
+<p><code>VERDACCIO_APPDIR</code>: <code>/opt/verdaccio</code>  the docker working directory<br><code>VERDACCIO_USER_NAME</code>: <code>verdaccio</code>   the system user<br><code>VERDACCIO_USER_UID</code>: <code>10001</code>   the user id being used to apply folder permissions<br><code>VERDACCIO_PORT</code>: <code>4873</code>    the verdaccio port<br><code>VERDACCIO_PROTOCOL</code>: <code>http</code>    the default http protocol</p>
+<p><a id="2-build-npm-module"></a></p>
+<h1 id="2-Build-NPM-module"><a href="#2-Build-NPM-module" class="headerlink" title="2. Build NPM module"></a>2. Build NPM module</h1><p>Create new module with name need <code>scopse</code> value. E.g: <code>@vts/business</code>. This scope value will use to define registry URL when pull or push package to registry.</p>
+<p>E.g: <code>package.json</code> file in framework module.</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;@vts/framework&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.0.3&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;VTS Service Framework is a project use MoleculerJS framework to build Micro-service architecture. In here we can use for Authentication, Common Popular...&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;main&quot;</span><span class="punctuation">:</span> <span class="string">&quot;index.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;test&quot;</span><span class="punctuation">:</span> <span class="string">&quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;repository&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;git&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://gitlab.vtsspace.com/vts-service/library/framework.git&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;author&quot;</span><span class="punctuation">:</span> <span class="string">&quot;nguyenvantien2009@gmail.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;license&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ISC&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><a id="3-addpush-to-registry-in-client"></a></p>
+<h1 id="3-Add-x2F-push-to-registry-in-client"><a href="#3-Add-x2F-push-to-registry-in-client" class="headerlink" title="3. Add&#x2F;push to registry in client"></a>3. Add&#x2F;push to registry in client</h1><p>Default registry URL of NPM is [<a target="_blank" rel="noopener" href="https://registry.npmjs.org/]">https://registry.npmjs.org/]</a>. When we install new package by <code>npm install &#123;module-name&#125;</code>, NPM will download this package from [<a target="_blank" rel="noopener" href="https://registry.npmjs.org/]">https://registry.npmjs.org/]</a> hub.</p>
+<p>To install package from private registry, we need add new URL. Now we add set registry URL with scopse <code>vts</code> then login with this scopse if want to publish module to registry.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> @vts:registry http://npm.vtsspace.com:4873</span><br><span class="line">npm login --registry=http://npm.vtsspace.com:4873 --scope=@vts</span><br></pre></td></tr></table></figure>
+
+<p>Now we can publish this module to registry by command line. Then access to [<a href="http://npm.vtsspace.com:4873]">http://npm.vtsspace.com:4873]</a> to see result.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># go to root folder of module.</span></span><br><span class="line">npm publish http://npm.vtsspace.com:4873</span><br></pre></td></tr></table></figure>
+
+<p><a id="4-using"></a></p>
+<h1 id="4-Using"><a href="#4-Using" class="headerlink" title="4. Using"></a>4. Using</h1><p>NOTE: We need <code>npm config set @vts:registry http://npm.vtsspace.com:4873</code> before install package with <code>vts</code> scopse. NPM will auto redirect to [<a href="http://npm.vtsspace.com:4873]">http://npm.vtsspace.com:4873]</a> to download package.</p>
+<p><a id="41-npm-run"></a></p>
+<h2 id="4-1-NPM-Run"><a href="#4-1-NPM-Run" class="headerlink" title="4.1 NPM Run"></a>4.1 NPM Run</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install @vts/business --save</span><br></pre></td></tr></table></figure>
+<p><a id="42-docker-compose"></a></p>
+<h2 id="4-2-Docker-Compose"><a href="#4-2-Docker-Compose" class="headerlink" title="4.2 Docker Compose"></a>4.2 Docker Compose</h2><p>In docker, you also need set registry URL before running <code>npm install</code>.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RUN npm config <span class="built_in">set</span> @vts:registry http://npm.vtsspace.com:4873</span><br><span class="line">RUN npm install</span><br></pre></td></tr></table></figure>
+
+<p><a id="5-references"></a></p>
+<h1 id="5-References"><a href="#5-References" class="headerlink" title="5. References"></a>5. References</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://verdaccio.org/docs/en/docker">Install Verdaccio by Docker</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.npmjs.com/creating-and-publishing-scoped-public-packages">Creating and publishing scoped public packages</a></li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="http://nguyenvantien2009.com/2021/deploy-private-npm-registry.html" data-id="cl3zg2pqh0011fkit8y5w95ti" class="article-share-link"><i class="fa fa-share"></i>Chia sẻ</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "Tien Nguyen"
+        },
+        "headline": "Deploy Private NPM Registry",
+        "image": "http://nguyenvantien2009.com/viet/2021/deploy-private-npm-registry/verdaccio.png",
+        "keywords": "Registry NPM Private Registry NodeJS",
+        "genre": "Hạ tầng",
+        "datePublished": "2020-09-11",
+        "dateCreated": "2020-09-11",
+        "dateModified": "2022-06-02",
+        "url": "http://nguyenvantien2009.com/2021/deploy-private-npm-registry.html",
+        "description": "
+
+
+1. Install Verdaccio
+2. Build NPM module
+3. Add&#x2F;push to registry in client
+4. Using
+4.1 NPM Run
+4.2 Docker Compose
+
+
+5. References
+
+
+
+
+
+default registry npm
+build library version and add depen",
+        "wordCount": 708
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>Theo dõi:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/nguyenvantien2009" target="_blank" rel="noopener">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="stack-overflow" href="https://stackoverflow.com/users/3343882/tien-nguyen" target="_blank" rel="noopener">
+                        <i class="icon fa fa-stack-overflow"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/nguyenvantien2009" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/viet/2021/ci-cd-with-jenkins-docker.html" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">Mới hơn</strong>
+        <p class="article-nav-title">
+        
+            CD/CD With Jenkins and Docker
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/viet/2021/create-ssl-certification.html" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">Cũ hơn</strong>
+        <p class="article-nav-title">Create SSL Certification</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">Mây thẻ</h3>
+        <div class="widget tagcloud">
+            <a href="/viet/tags/API/" style="font-size: 10px;">API</a> <a href="/viet/tags/Algorithm/" style="font-size: 10px;">Algorithm</a> <a href="/viet/tags/Allow-Disable-Accesss-Port/" style="font-size: 10px;">Allow/Disable Accesss Port</a> <a href="/viet/tags/AngularJS/" style="font-size: 10px;">AngularJS</a> <a href="/viet/tags/Approach/" style="font-size: 11.43px;">Approach</a> <a href="/viet/tags/Automatic/" style="font-size: 10px;">Automatic</a> <a href="/viet/tags/Backup-Restore/" style="font-size: 10px;">Backup Restore</a> <a href="/viet/tags/Blog/" style="font-size: 10px;">Blog</a> <a href="/viet/tags/Bootstrap-Screen/" style="font-size: 10px;">Bootstrap Screen</a> <a href="/viet/tags/Build-Docker/" style="font-size: 10px;">Build Docker</a> <a href="/viet/tags/CI-CD/" style="font-size: 12.86px;">CI/CD</a> <a href="/viet/tags/CORS/" style="font-size: 10px;">CORS</a> <a href="/viet/tags/CSS-Screen/" style="font-size: 10px;">CSS Screen</a> <a href="/viet/tags/Cluster-Nodes/" style="font-size: 10px;">Cluster Nodes</a> <a href="/viet/tags/Configuration/" style="font-size: 10px;">Configuration</a> <a href="/viet/tags/Console/" style="font-size: 10px;">Console</a> <a href="/viet/tags/Crontab/" style="font-size: 10px;">Crontab</a> <a href="/viet/tags/Databases/" style="font-size: 10px;">Databases</a> <a href="/viet/tags/Deploy-Docker/" style="font-size: 10px;">Deploy Docker</a> <a href="/viet/tags/Deployment/" style="font-size: 11.43px;">Deployment</a> <a href="/viet/tags/Developer-Tools/" style="font-size: 10px;">Developer Tools</a> <a href="/viet/tags/Device-size/" style="font-size: 10px;">Device size</a> <a href="/viet/tags/Docker/" style="font-size: 20px;">Docker</a> <a href="/viet/tags/Docker-Image-Hosting/" style="font-size: 10px;">Docker Image Hosting</a> <a href="/viet/tags/Docker-Registry/" style="font-size: 10px;">Docker Registry</a> <a href="/viet/tags/Docker-Repository/" style="font-size: 10px;">Docker Repository</a> <a href="/viet/tags/Dockerfile/" style="font-size: 11.43px;">Dockerfile</a> <a href="/viet/tags/Document/" style="font-size: 15.71px;">Document</a> <a href="/viet/tags/ERP/" style="font-size: 11.43px;">ERP</a> <a href="/viet/tags/Firewall/" style="font-size: 10px;">Firewall</a> <a href="/viet/tags/Font-Style/" style="font-size: 10px;">Font Style</a> <a href="/viet/tags/Framework/" style="font-size: 10px;">Framework</a> <a href="/viet/tags/Framework-NodeJS/" style="font-size: 10px;">Framework NodeJS</a> <a href="/viet/tags/Frontend/" style="font-size: 10px;">Frontend</a> <a href="/viet/tags/Git/" style="font-size: 11.43px;">Git</a> <a href="/viet/tags/Github/" style="font-size: 10px;">Github</a> <a href="/viet/tags/Github-Page/" style="font-size: 10px;">Github Page</a> <a href="/viet/tags/Gitlab/" style="font-size: 14.29px;">Gitlab</a> <a href="/viet/tags/Gitlab-Runner/" style="font-size: 10px;">Gitlab Runner</a> <a href="/viet/tags/HapiJS/" style="font-size: 11.43px;">HapiJS</a> <a href="/viet/tags/Hardware/" style="font-size: 10px;">Hardware</a> <a href="/viet/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/viet/tags/Hexo-Hidden-Post-Article/" style="font-size: 10px;">Hexo - Hidden Post - Article</a> <a href="/viet/tags/Hexo-Command/" style="font-size: 10px;">Hexo Command</a> <a href="/viet/tags/How/" style="font-size: 10px;">How</a> <a href="/viet/tags/Icon/" style="font-size: 10px;">Icon</a> <a href="/viet/tags/Install/" style="font-size: 11.43px;">Install</a> <a href="/viet/tags/Install-Databases/" style="font-size: 10px;">Install - Databases</a> <a href="/viet/tags/Install-Odoo/" style="font-size: 10px;">Install Odoo</a> <a href="/viet/tags/Ionic/" style="font-size: 10px;">Ionic</a> <a href="/viet/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/viet/tags/Journey/" style="font-size: 10px;">Journey</a> <a href="/viet/tags/Kill/" style="font-size: 10px;">Kill</a> <a href="/viet/tags/Kill-Process/" style="font-size: 10px;">Kill Process</a> <a href="/viet/tags/Laravel/" style="font-size: 11.43px;">Laravel</a> <a href="/viet/tags/Learn/" style="font-size: 10px;">Learn</a> <a href="/viet/tags/Linux/" style="font-size: 11.43px;">Linux</a> <a href="/viet/tags/Load-Balancing/" style="font-size: 10px;">Load Balancing</a> <a href="/viet/tags/Machine-Learning/" style="font-size: 11.43px;">Machine Learning</a> <a href="/viet/tags/Management-Tools/" style="font-size: 10px;">Management Tools</a> <a href="/viet/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/viet/tags/Microservice/" style="font-size: 12.86px;">Microservice</a> <a href="/viet/tags/MinIO-Storage-Cloud/" style="font-size: 10px;">MinIO - Storage Cloud</a> <a href="/viet/tags/Model/" style="font-size: 10px;">Model</a> <a href="/viet/tags/Moleculer/" style="font-size: 11.43px;">Moleculer</a> <a href="/viet/tags/MoleculerJS/" style="font-size: 11.43px;">MoleculerJS</a> <a href="/viet/tags/MongoDB/" style="font-size: 10px;">MongoDB</a> <a href="/viet/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/viet/tags/NGINX-Proxy/" style="font-size: 10px;">NGINX Proxy</a> <a href="/viet/tags/NPM/" style="font-size: 10px;">NPM</a> <a href="/viet/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/viet/tags/NodeJS/" style="font-size: 17.14px;">NodeJS</a> <a href="/viet/tags/Notification/" style="font-size: 10px;">Notification</a> <a href="/viet/tags/Odoo/" style="font-size: 17.14px;">Odoo</a> <a href="/viet/tags/Odoo-API/" style="font-size: 11.43px;">Odoo API</a> <a href="/viet/tags/Odoo-Docker/" style="font-size: 10px;">Odoo Docker</a> <a href="/viet/tags/Odoo-XML-RPC/" style="font-size: 10px;">Odoo XML-RPC</a> <a href="/viet/tags/OpenAPI/" style="font-size: 12.86px;">OpenAPI</a> <a href="/viet/tags/PDF/" style="font-size: 11.43px;">PDF</a> <a href="/viet/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/viet/tags/PM2/" style="font-size: 10px;">PM2</a> <a href="/viet/tags/Pandoc/" style="font-size: 10px;">Pandoc</a> <a href="/viet/tags/Pankod/" style="font-size: 10px;">Pankod</a> <a href="/viet/tags/Password/" style="font-size: 11.43px;">Password</a> <a href="/viet/tags/PoS/" style="font-size: 12.86px;">PoS</a> <a href="/viet/tags/PoS-Box/" style="font-size: 10px;">PoS Box</a> <a href="/viet/tags/Populate/" style="font-size: 10px;">Populate</a> <a href="/viet/tags/Print-Receipt/" style="font-size: 10px;">Print Receipt</a> <a href="/viet/tags/Printer/" style="font-size: 10px;">Printer</a> <a href="/viet/tags/Private-Registry/" style="font-size: 10px;">Private Registry</a> <a href="/viet/tags/Process/" style="font-size: 11.43px;">Process</a> <a href="/viet/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/viet/tags/Rasberry-Pi/" style="font-size: 10px;">Rasberry Pi</a> <a href="/viet/tags/Raspberry/" style="font-size: 10px;">Raspberry</a> <a href="/viet/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/viet/tags/References/" style="font-size: 10px;">References</a> <a href="/viet/tags/Registry/" style="font-size: 10px;">Registry</a> <a href="/viet/tags/Report/" style="font-size: 10px;">Report</a> <a href="/viet/tags/Research/" style="font-size: 11.43px;">Research</a> <a href="/viet/tags/Rest/" style="font-size: 10px;">Rest</a> <a href="/viet/tags/Restful/" style="font-size: 11.43px;">Restful</a> <a href="/viet/tags/SSL/" style="font-size: 10px;">SSL</a> <a href="/viet/tags/SSL-Certification/" style="font-size: 10px;">SSL Certification</a> <a href="/viet/tags/SaaS/" style="font-size: 10px;">SaaS</a> <a href="/viet/tags/Server/" style="font-size: 18.57px;">Server</a> <a href="/viet/tags/Setup/" style="font-size: 10px;">Setup</a> <a href="/viet/tags/Signature/" style="font-size: 10px;">Signature</a> <a href="/viet/tags/Slack/" style="font-size: 11.43px;">Slack</a> <a href="/viet/tags/Slack-Webhook/" style="font-size: 10px;">Slack Webhook</a> <a href="/viet/tags/Software-Design/" style="font-size: 10px;">Software Design</a> <a href="/viet/tags/Spring-Boot/" style="font-size: 10px;">Spring Boot</a> <a href="/viet/tags/Star/" style="font-size: 10px;">Star</a> <a href="/viet/tags/Starter/" style="font-size: 11.43px;">Starter</a> <a href="/viet/tags/SublimeText/" style="font-size: 10px;">SublimeText</a> <a href="/viet/tags/Swagger/" style="font-size: 12.86px;">Swagger</a> <a href="/viet/tags/Syspass/" style="font-size: 10px;">Syspass</a> <a href="/viet/tags/Transporters/" style="font-size: 10px;">Transporters</a> <a href="/viet/tags/Trello/" style="font-size: 10px;">Trello</a> <a href="/viet/tags/Typescript/" style="font-size: 10px;">Typescript</a> <a href="/viet/tags/UI-Component/" style="font-size: 10px;">UI Component</a> <a href="/viet/tags/Ubuntu/" style="font-size: 14.29px;">Ubuntu</a> <a href="/viet/tags/Vim/" style="font-size: 10px;">Vim</a> <a href="/viet/tags/Website/" style="font-size: 10px;">Website</a> <a href="/viet/tags/Window/" style="font-size: 10px;">Window</a> <a href="/viet/tags/Wireless/" style="font-size: 10px;">Wireless</a> <a href="/viet/tags/Wireless-Raspberry-Pi/" style="font-size: 10px;">Wireless Raspberry Pi</a> <a href="/viet/tags/Wordpress/" style="font-size: 11.43px;">Wordpress</a> <a href="/viet/tags/Wordpress-Theme/" style="font-size: 10px;">Wordpress Theme</a> <a href="/viet/tags/X-Printer/" style="font-size: 10px;">X-Printer</a> <a href="/viet/tags/XML-RPC/" style="font-size: 11.43px;">XML-RPC</a> <a href="/viet/tags/Yarn/" style="font-size: 10px;">Yarn</a> <a href="/viet/tags/Zoom/" style="font-size: 10px;">Zoom</a> <a href="/viet/tags/document/" style="font-size: 10px;">document</a> <a href="/viet/tags/document-rest-api/" style="font-size: 10px;">document rest api</a> <a href="/viet/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/viet/tags/swagger-edit/" style="font-size: 10px;">swagger edit</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">Liên kết</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://nguyenvantien2009.com">Tien_Nguyen_Site</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/viet/" class="logo"></a>
+                </h1>
+                <p>&copy; 2022 Tien Nguyen</p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'nguyenvantien2009';
+    
+    
+    var disqus_url = 'http://nguyenvantien2009.com/2021/deploy-private-npm-registry.html';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/viet/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/viet/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/viet/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML.js"></script>
+
+    
+
+    
+    
+      <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+  window.cookieconsent.initialise({
+    "palette": {
+      "popup": {
+        "background": "#f0f0f0",
+        "text": "#777777"
+      },
+      "button": {
+        "background": "#82b965",
+        "text": "#ffffff"
+      }
+    },
+    "theme": "edgeless"
+  });
+</script>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/viet/js/main.js"></script>
+
+
+</body>
+</html>
